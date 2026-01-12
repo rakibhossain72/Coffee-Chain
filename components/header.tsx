@@ -27,33 +27,20 @@ export function Header() {
           <nav className="hidden items-center gap-6 sm:flex">
             {isConnected && (
               <>
-                <button onClick={() => router.push("/create")} className="text-sm text-gray-600 hover:text-gray-900">
+                <button onClick={() => router.push("/create")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
                   Create Page
                 </button>
-                <button onClick={() => router.push("/dashboard")} className="text-sm text-gray-600 hover:text-gray-900">
+                <button onClick={() => router.push("/dashboard")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
                   Dashboard
                 </button>
               </>
             )}
           </nav>
 
-          {isConnected ? (
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => disconnect()}
-                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
-              >
-                {formatAddress(address!)}
-              </button>
+              <appkit-button />
             </div>
-          ) : (
-            <button
-              onClick={() => open()}
-              className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
-            >
-              Connect Wallet
-            </button>
-          )}
+          
         </div>
       </div>
     </header>
