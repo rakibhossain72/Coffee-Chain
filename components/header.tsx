@@ -2,11 +2,13 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useAppKit, useAppKitAccount } from "@reown/appkit/react"
+import { useAccount, useConnect, useDisconnect } from "wagmi"
+import { injected } from "wagmi/connectors"
 
 export function Header() {
-  const { address, isConnected } = useAppKitAccount()
-  const { open } = useAppKit()
+  const { address, isConnected } = useAccount()
+  const { connect } = useConnect()
+  const { disconnect } = useDisconnect()
   const router = useRouter()
 
   const formatAddress = (addr: string) => {
@@ -35,7 +37,23 @@ export function Header() {
             )}
           </nav>
 
-          <appkit-button />
+          {isConnected ? (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => disconnect()}
+                className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
+              >
+                {formatAddress(address!)}
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => connect({ connector: injected() })}
+              className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
+            >
+              Connect Wallet
+            </button>
+          )}
         </div>
       </div>
     </header>
