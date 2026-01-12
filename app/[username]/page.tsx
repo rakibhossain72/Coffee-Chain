@@ -1,0 +1,130 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
+import { useReadContract } from "wagmi"
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
+import { SupportForm } from "@/components/support-form"
+import { SupportsList } from "@/components/supports-list"
+import { formatAddress } from "@/lib/utils"
+import { getAddress } from "viem"
+
+export default function CreatorProfilePage() {
+  const params = useParams()
+  const username = params.username as string
+  const [creator, setCreator] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  // Try to parse as address, fallback to treating as ENS name
+  let creatorAddress: `0x${string}` | null = null
+  try {
+    if (username && username.startsWith("0x")) {
+      creatorAddress = getAddress(username)
+    }
+  } catch {
+    // If not a valid address, would need ENS resolution
+    creatorAddress = null
+  }
+
+  const { data: creatorData } = useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CONTRACT_ABI,
+    functionName: "getCreator",
+    args: creatorAddress ? [creatorAddress] : undefined,
+    query: {
+      enabled: !!creatorAddress,
+    },
+  })
+
+  const { data: memos } = useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CONTRACT_ABI,
+    functionName: "getMemos",
+    args: creatorAddress ? [creatorAddress] : undefined,
+    query: {
+      enabled: !!creatorAddress,
+    },
+  })
+
+  useEffect(() => {
+    if (creatorData && creatorData.name) {
+      setCreator({
+        address: creatorAddress,
+        name: creatorData.name,
+        about: creatorData.about,
+        totalReceived: creatorData.totalReceived,
+      })
+      setLoading(false)
+    } else if (creatorAddress && !loading) {
+      setLoading(false)
+    }
+  }, [creatorData, creatorAddress, loading])
+
+  if (!creatorAddress) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+          <p className="text-sm text-red-800">Creator not found. Please check the address.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="space-y-4">
+          <div className="h-12 w-12 rounded-full bg-gray-200 animate-pulse" />
+          <div className="h-6 w-48 rounded bg-gray-200 animate-pulse" />
+          <div className="h-4 w-96 rounded bg-gray-200 animate-pulse" />
+        </div>
+      </div>
+    )
+  }
+
+  if (!creator) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+          <p className="text-sm text-yellow-800">This creator hasn't set up their profile yet.</p>
+        </div>
+      </div>
+    )
+  }
+
+  const ethAmount = Number(creator.totalReceived) / 1e18
+
+  return (
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+      {/* Creator Header */}
+      <div className="mb-10">
+        <div className="mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500" />
+        <h1 className="text-2xl font-bold text-gray-900">{creator.name}</h1>
+        <p className="mt-2 text-sm text-gray-600">{creator.about}</p>
+
+        <div className="mt-4 flex items-center gap-6">
+          <div>
+            <p className="text-xs text-gray-500">Total received</p>
+            <p className="text-lg font-semibold text-gray-900">{ethAmount.toFixed(4)} ETH</p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-500">Creator address</p>
+            <p className="text-sm font-mono text-gray-600">{formatAddress(creator.address)}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Support Form */}
+        <div className="lg:col-span-1">
+          <SupportForm creatorAddress={creator.address} />
+        </div>
+
+        {/* Supports List */}
+        <div className="lg:col-span-2">
+          <SupportsList memos={memos || []} />
+        </div>
+      </div>
+    </div>
+  )
+}
