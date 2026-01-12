@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { Providers } from "@/components/providers"
 import "./globals.css"
 
+
 const geist = Geist({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
@@ -31,11 +32,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
   return (
     <html lang="en">
       <body className={`${geist.className} antialiased`}>

@@ -1,28 +1,18 @@
-"use client"
+import type React from "react";
+import { Header } from "./header";
+import ContextProvider from "@/context";
+import { headers } from "next/headers";
 
-import type React from "react"
-import { WagmiProvider, createConfig, http } from "wagmi"
-import { mainnet, sepolia } from "wagmi/chains"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { Header } from "./header"
-
-const queryClient = new QueryClient()
-
-const config = createConfig({
-  chains: [sepolia, mainnet],
-  transports: {
-    [sepolia.id]: http(),
-    [mainnet.id]: http(),
-  },
-})
-
-export function Providers({ children }: { children: React.ReactNode }) {
+export async function Providers({ children }: { children: React.ReactNode }) {
+  const headersData = await headers();
+  const cookies = headersData.get("cookie");
+  
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <Header />
-        <main className="min-h-screen">{children}</main>
-      </QueryClientProvider>
-    </WagmiProvider>
-  )
+    <ContextProvider cookies={cookies}>
+      <Header />
+      <main className="min-h-screen">
+        {children}
+      </main>
+    </ContextProvider>
+  );
 }
