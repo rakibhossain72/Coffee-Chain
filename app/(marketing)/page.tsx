@@ -1,17 +1,20 @@
 "use client"
 
 import Link from "next/link"
-import { useAppKitAccount } from "@reown/appkit/react"
+import { useAppKitAccount, useAppKit } from "@reown/appkit/react"
 import { useRouter } from "next/navigation"
 import { CheckCircle, Zap, Lock, Users } from "lucide-react"
 
 export default function LandingPage() {
   const { isConnected } = useAppKitAccount()
+  const { open } = useAppKit()
   const router = useRouter()
 
   const handleGetStarted = () => {
     if (isConnected) {
       router.push("/create")
+    } else {
+      open()
     }
   }
 

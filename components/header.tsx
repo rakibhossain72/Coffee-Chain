@@ -2,12 +2,12 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useAccount, useConnect, useDisconnect } from "wagmi"
-import { injected } from "wagmi/connectors"
+import { useAccount, useDisconnect } from "wagmi"
+import { useAppKit } from "@reown/appkit/react"
 
 export function Header() {
   const { address, isConnected } = useAccount()
-  const { connect } = useConnect()
+  const { open } = useAppKit()
   const { disconnect } = useDisconnect()
   const router = useRouter()
 
@@ -48,7 +48,7 @@ export function Header() {
             </div>
           ) : (
             <button
-              onClick={() => connect({ connector: injected() })}
+              onClick={() => open()}
               className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
             >
               Connect Wallet
