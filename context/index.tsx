@@ -11,10 +11,10 @@ const queryClient = new QueryClient()
 
 // Set up metadata
 const metadata = {
-  name: 'coffee-chain',
-  description: 'coffee-chain',
-  url: 'http://localhost:3000/', // origin must match your domain & subdomain
-  icons: ['https://avatars.githubusercontent.com/u/179229932']
+  name: 'Coffee Chain',
+  description: 'Support creators on the Ethereum blockchain with direct ETH tips.',
+  url: 'https://coffeechain.eth', // Updated to match project brand
+  icons: ['https://coffeechain.eth/icon.svg']
 }
 
 // Create the modal
@@ -24,8 +24,19 @@ export const modal = createAppKit({
   networks,
   metadata,
   themeMode: 'light',
+  features: {
+    analytics: true, // Optional but recommended
+    email: false, // Keep it Web3 native
+    socials: ['google', 'x', 'github', 'discord'],
+    emailShowWallets: true,
+  },
   themeVariables: {
-    '--w3m-accent': '#f97316',
+    '--w3m-accent': '#f97316', // Orange-500
+    '--w3m-color-mix': '#f97316',
+    '--w3m-color-mix-strength': 5,
+    '--w3m-border-radius-master': '12px',
+    '--w3m-font-family': 'Inter, sans-serif',
+    '--w3m-z-index': 9999
   }
 })
 
