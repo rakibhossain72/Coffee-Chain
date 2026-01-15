@@ -78,7 +78,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (memosData) {
-      setMemos(memosData)
+      setMemos([...memosData])
     }
   }, [memosData])
 
