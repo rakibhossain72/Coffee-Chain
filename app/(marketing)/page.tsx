@@ -6,6 +6,7 @@ import { useAppKit } from "@reown/appkit/react"
 import { useRouter } from "next/navigation"
 import { CheckCircle, Zap, Lock, Users } from "lucide-react"
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
+import Image from "next/image"
 
 export default function LandingPage() {
   const { address, isConnected } = useAccount()
@@ -213,7 +214,7 @@ export default function LandingPage() {
           <div className="grid gap-8 md:grid-cols-4">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="h-8 w-8 rounded-full bg-orange-500" />
+                <Image src="/icon.png" alt="Coffee Chain Logo" width={32} height={32} />
                 <span className="text-base font-semibold text-white">Coffee Chain</span>
               </div>
               <p className="text-sm text-gray-400">Supporting creators on Ethereum</p>

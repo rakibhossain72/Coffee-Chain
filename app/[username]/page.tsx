@@ -8,6 +8,7 @@ import { SupportForm } from "@/components/support-form"
 import { SupportsList } from "@/components/supports-list"
 import { formatAddress } from "@/lib/utils"
 import { getAddress } from "viem"
+import Image from "next/image"
 
 export default function CreatorProfilePage() {
   const params = useParams()
@@ -113,7 +114,7 @@ export default function CreatorProfilePage() {
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Creator Header */}
       <div className="mb-10">
-        <div className="mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500" />
+        <Image src="/user.png" alt="Coffee Chain Logo" width={64} height={64} />
         <h1 className="text-2xl font-bold text-gray-900">@{creator.username}</h1>
         <p className="mt-2 text-sm text-gray-600">{creator.about}</p>
 

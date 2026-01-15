@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useAccount, useDisconnect, useReadContract } from "wagmi"
 import { useAppKit } from "@reown/appkit/react"
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
+import Image from "next/image"
 
 export function Header() {
   const { address, isConnected } = useAccount()
@@ -33,7 +34,8 @@ export function Header() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-orange-500" />
+            {/* <div className="h-8 w-8 rounded-full bg-orange-500" /> */}
+            <Image src="/icon.png" alt="Coffee Chain Logo" width={32} height={32} />
             <span className="text-sm font-semibold text-gray-900">Coffee Chain</span>
           </Link>
 

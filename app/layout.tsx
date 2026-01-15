@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   title: "Coffee Chain - Support Creators on Ethereum",
   description:
     "A decentralized platform where supporters can directly tip creators with ETH. No intermediaries, no hidden fees.",
-  generator: "v0.app",
   icons: {
     icon: [
       {
