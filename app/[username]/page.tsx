@@ -26,7 +26,7 @@ export default function CreatorProfilePage() {
     creatorAddress = null
   }
 
-  const { data: creatorData } = useReadContract({
+  const { data: creatorDataByAddress } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
     abi: CONTRACT_ABI,
     functionName: "getCreator",
@@ -36,35 +36,50 @@ export default function CreatorProfilePage() {
     },
   })
 
+  const { data: creatorDataByName } = useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CONTRACT_ABI,
+    functionName: "getCreatorByName",
+    args: !creatorAddress && username ? [username] : undefined,
+    query: {
+      enabled: !creatorAddress && !!username,
+    },
+  })
+
+  // Use either the direct address lookup results or the name lookup results
+  const activeCreatorData = creatorDataByAddress || creatorDataByName
+  const activeAddress = creatorAddress || (creatorDataByName as any)?.owner
+
   const { data: memos } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
     abi: CONTRACT_ABI,
     functionName: "getMemos",
-    args: creatorAddress ? [creatorAddress] : undefined,
+    args: activeAddress ? [activeAddress] : undefined,
     query: {
-      enabled: !!creatorAddress,
+      enabled: !!activeAddress,
     },
   })
 
   useEffect(() => {
-    if (creatorData && creatorData.name) {
+    if (activeCreatorData && activeCreatorData.name) {
       setCreator({
-        address: creatorAddress,
-        name: creatorData.name,
-        about: creatorData.about,
-        totalReceived: creatorData.totalReceived,
+        address: activeAddress,
+        username: activeCreatorData.name,
+        about: activeCreatorData.about,
+        totalReceived: activeCreatorData.totalReceived,
       })
       setLoading(false)
-    } else if (creatorAddress && !loading) {
+    } else if ((creatorAddress || creatorDataByName === null) && !loading) {
+      // If we tried lookup and got nothing
       setLoading(false)
     }
-  }, [creatorData, creatorAddress, loading])
+  }, [activeCreatorData, activeAddress, loading, creatorAddress, creatorDataByName])
 
-  if (!creatorAddress) {
+  if (!activeAddress && !loading) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-          <p className="text-sm text-red-800">Creator not found. Please check the address.</p>
+          <p className="text-sm text-red-800">Creator not found. Please check the username or address.</p>
         </div>
       </div>
     )
@@ -99,7 +114,7 @@ export default function CreatorProfilePage() {
       {/* Creator Header */}
       <div className="mb-10">
         <div className="mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500" />
-        <h1 className="text-2xl font-bold text-gray-900">{creator.name}</h1>
+        <h1 className="text-2xl font-bold text-gray-900">@{creator.username}</h1>
         <p className="mt-2 text-sm text-gray-600">{creator.about}</p>
 
         <div className="mt-4 flex items-center gap-6">
@@ -122,7 +137,7 @@ export default function CreatorProfilePage() {
 
         {/* Supports List */}
         <div className="lg:col-span-2">
-          <SupportsList memos={memos || []} />
+          <SupportsList memos={memos ? [...memos] : []} />
         </div>
       </div>
     </div>

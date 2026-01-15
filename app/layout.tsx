@@ -40,7 +40,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geist.className} antialiased`}>
+      <body className={`${geist.className} antialiased`} suppressHydrationWarning>
         <Providers>{children}</Providers>
         <Analytics />
       </body>

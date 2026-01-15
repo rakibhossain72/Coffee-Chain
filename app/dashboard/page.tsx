@@ -66,7 +66,7 @@ export default function DashboardPage() {
 
     if (creatorData?.name) {
       setCreator({
-        name: creatorData.name,
+        username: creatorData.name,
         about: creatorData.about,
       })
       setLoading(false)

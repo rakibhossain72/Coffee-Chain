@@ -1,18 +1,36 @@
 "use client"
 
 import Link from "next/link"
-import { useAppKitAccount, useAppKit } from "@reown/appkit/react"
+import { useAccount, useReadContract } from "wagmi"
+import { useAppKit } from "@reown/appkit/react"
 import { useRouter } from "next/navigation"
 import { CheckCircle, Zap, Lock, Users } from "lucide-react"
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
 
 export default function LandingPage() {
-  const { isConnected } = useAppKitAccount()
+  const { address, isConnected } = useAccount()
   const { open } = useAppKit()
   const router = useRouter()
 
+  const { data: creatorData } = useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CONTRACT_ABI,
+    functionName: "getCreator",
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address,
+    },
+  })
+
+  const isCreator = !!creatorData?.name
+
   const handleGetStarted = () => {
     if (isConnected) {
-      router.push("/create")
+      if (isCreator) {
+        router.push("/dashboard")
+      } else {
+        router.push("/create")
+      }
     } else {
       open()
     }
@@ -38,7 +56,7 @@ export default function LandingPage() {
               onClick={handleGetStarted}
               className="rounded-lg bg-orange-500 px-8 py-3 text-base font-semibold text-white hover:bg-orange-600 transition-colors cursor-pointer"
             >
-              Create Your Creator Page
+              {!isConnected ? "Get Started" : isCreator ? "Go to Dashboard" : "Create Your Creator Page"}
             </button>
             <Link
               href="#how-it-works"
@@ -184,7 +202,7 @@ export default function LandingPage() {
             onClick={handleGetStarted}
             className="mt-8 rounded-lg bg-white px-8 py-3 text-base font-semibold text-orange-600 hover:bg-gray-50 transition-colors"
           >
-            Create Your Page Today
+            {!isConnected ? "Create Your Page Today" : isCreator ? "Manage Your Page" : "Create Your Page Today"}
           </button>
         </div>
       </section>

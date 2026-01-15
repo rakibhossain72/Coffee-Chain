@@ -2,14 +2,27 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useAccount, useDisconnect } from "wagmi"
+import { useAccount, useDisconnect, useReadContract } from "wagmi"
 import { useAppKit } from "@reown/appkit/react"
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
 
 export function Header() {
   const { address, isConnected } = useAccount()
   const { open } = useAppKit()
   const { disconnect } = useDisconnect()
   const router = useRouter()
+
+  const { data: creatorData } = useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CONTRACT_ABI,
+    functionName: "getCreator",
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address,
+    },
+  })
+
+  const isCreator = !!creatorData?.name
 
   const formatAddress = (addr: string) => {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`
@@ -27,12 +40,15 @@ export function Header() {
           <nav className="hidden items-center gap-6 sm:flex">
             {isConnected && (
               <>
-                <button onClick={() => router.push("/create")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
-                  Create Page
-                </button>
-                <button onClick={() => router.push("/dashboard")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
-                  Dashboard
-                </button>
+                {!isCreator ? (
+                  <button onClick={() => router.push("/create")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
+                    Create Page
+                  </button>
+                ) : (
+                  <button onClick={() => router.push("/dashboard")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
+                    Dashboard
+                  </button>
+                )}
               </>
             )}
           </nav>

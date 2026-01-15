@@ -11,7 +11,7 @@ import toast from "react-hot-toast"
 export default function CreatePage() {
   const { address, isConnected } = useAccount()
   const router = useRouter()
-  const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
   const [about, setAbout] = useState("")
 
   const { writeContract, isPending, data: hash } = useWriteContract()
@@ -30,8 +30,14 @@ export default function CreatePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!name.trim()) {
-      toast.error("Please enter your display name")
+    const usernameRegex = /^[a-z0-9]+$/
+    if (!username.trim()) {
+      toast.error("Please enter a username")
+      return
+    }
+
+    if (!usernameRegex.test(username)) {
+      toast.error("Username must be lowercase, no spaces or special characters")
       return
     }
 
@@ -41,18 +47,18 @@ export default function CreatePage() {
     }
 
     try {
-      writeContract({
-        address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: CONTRACT_ABI,
-        functionName: "registerCreator",
-        args: [name, about],
-      })
+        writeContract({
+          address: CONTRACT_ADDRESS as `0x${string}`,
+          abi: CONTRACT_ABI,
+          functionName: "registerCreator",
+          args: [username, about],
+        })
 
       // After successful transaction
       if (hash) {
         toast.success("Creator page created! Redirecting...")
         setTimeout(() => {
-          router.push(`/${address}`)
+          router.push(`/dashboard`)
         }, 2000)
       }
     } catch (error) {
@@ -74,21 +80,23 @@ export default function CreatePage() {
       </div>
 
       <form onSubmit={handleSubmit} className="rounded-xl border border-gray-200 bg-white p-8">
-        {/* Display Name */}
         <div className="mb-6">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2">
-            Display Name
+          <label htmlFor="username" className="block text-sm font-medium text-gray-900 mb-1">
+            Username
           </label>
+          <p className="mb-2 text-xs text-gray-500">
+            Must be unique, use only lowercase letters and numbers. No spaces, special characters, or uppercase letters.
+          </p>
           <input
-            id="name"
+            id="username"
             type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. cryptocreator"
+            value={username}
+            onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9]/g, ""))}
             maxLength={50}
             className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm placeholder:text-gray-400 focus:border-orange-500 focus:outline-none"
           />
-          <p className="mt-1 text-xs text-gray-500">{name.length}/50</p>
+          <p className="mt-1 text-xs text-gray-500">{username.length}/50</p>
         </div>
 
         {/* About */}
@@ -112,7 +120,7 @@ export default function CreatePage() {
         <div className="mb-8 rounded-lg bg-blue-50 border border-blue-200 p-4">
           <p className="text-xs text-blue-900">
             Your creator page will be accessible at{" "}
-            <span className="font-mono font-semibold">coffeechain.eth/{address?.slice(0, 6)}...</span>
+            <span className="font-mono font-semibold">coffeechain.eth/{username || "your-username"}</span>
           </p>
         </div>
 
