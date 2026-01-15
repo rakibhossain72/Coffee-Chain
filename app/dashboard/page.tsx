@@ -7,6 +7,7 @@ import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
 import { WithdrawButton } from "@/components/withdraw-button"
 import { EditProfileForm } from "@/components/edit-profile-form"
 import { formatAddress } from "@/lib/utils"
+import { AccessRestrictionModal } from "@/components/access-restriction-modal"
 
 const ETH_TO_USD = 2000 // Example rate, would normally be fetched
 
@@ -59,11 +60,7 @@ export default function DashboardPage() {
   })
 
   useEffect(() => {
-    if (!isConnected) {
-      router.push("/")
-      return
-    }
-
+    // Access control is handled via conditional rendering
     if (creatorData?.name) {
       setCreator({
         username: creatorData.name,
@@ -74,7 +71,7 @@ export default function DashboardPage() {
       // Creator not registered
       setLoading(false)
     }
-  }, [creatorData, address, isConnected, router, loading])
+  }, [creatorData, address, router, loading])
 
   useEffect(() => {
     if (memosData) {
@@ -83,7 +80,7 @@ export default function DashboardPage() {
   }, [memosData])
 
   if (!isConnected) {
-    return null
+    return <AccessRestrictionModal type="no-wallet" />
   }
 
   if (loading) {
@@ -101,23 +98,8 @@ export default function DashboardPage() {
     )
   }
 
-  if (!creator) {
-    return (
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6">
-          <h2 className="text-sm font-semibold text-yellow-900 mb-2">No creator profile</h2>
-          <p className="text-sm text-yellow-700 mb-4">
-            You don't have a creator profile yet. Create one to start receiving support.
-          </p>
-          <button
-            onClick={() => router.push("/create")}
-            className="rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-700"
-          >
-            Create profile
-          </button>
-        </div>
-      </div>
-    )
+  if (!creator && !loading) {
+    return <AccessRestrictionModal type="not-creator" />
   }
 
   const balanceETH = Number(balance || 0) / 1e18

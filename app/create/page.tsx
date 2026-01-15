@@ -3,10 +3,11 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from "wagmi"
 import { useRouter } from "next/navigation"
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
 import toast from "react-hot-toast"
+import { AccessRestrictionModal } from "@/components/access-restriction-modal"
 
 export default function CreatePage() {
   const { address, isConnected } = useAccount()
@@ -19,13 +20,23 @@ export default function CreatePage() {
     hash,
   })
 
+  const { data: creatorData, isLoading: isCheckingCreator } = useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CONTRACT_ABI,
+    functionName: "getCreator",
+    args: address ? [address] : undefined,
+    query: {
+      enabled: !!address,
+    },
+  })
+
+  const isCreator = !!creatorData?.name
   const isLoading = isPending || isWaiting
 
+  // Removed automatic redirect to allow showing the modal instead
   useEffect(() => {
-    if (!isConnected) {
-      router.push("/")
-    }
-  }, [isConnected, router])
+    // We handle access control via conditional rendering now
+  }, [isConnected, isCreator])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -67,7 +78,19 @@ export default function CreatePage() {
   }
 
   if (!isConnected) {
-    return null
+    return <AccessRestrictionModal type="no-wallet" />
+  }
+
+  if (isCheckingCreator) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-orange-500 border-t-transparent" />
+      </div>
+    )
+  }
+
+  if (isCreator) {
+    return <AccessRestrictionModal type="already-creator" />
   }
 
   return (
