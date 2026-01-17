@@ -59,6 +59,7 @@ export default function LandingPage() {
               <div className="hidden md:flex items-center gap-8">
                 <Link href="#features" className="text-sm font-bold text-gray-600 hover:text-orange-600 transition-colors">Features</Link>
                 <Link href="#how-it-works" className="text-sm font-bold text-gray-600 hover:text-orange-600 transition-colors">Workflow</Link>
+                <Link href="/docs" className="text-sm font-bold text-gray-600 hover:text-orange-600 transition-colors">Docs</Link>
               </div>
               <button 
                 onClick={handleGetStarted}
@@ -80,9 +81,9 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-8 flex justify-center">
-              <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+              <div className="relative rounded-full px-3 py-1 text-[10px] sm:text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 max-w-[90%] sm:max-w-none shadow-sm">
                 Now live on Sepolia Testnet.{" "}
-                <Link href="https://buy-me-a-coffee-web3-seven.vercel.app/" className="font-semibold text-orange-600">
+                <Link href="/docs" className="font-semibold text-orange-600">
                   <span className="absolute inset-0" aria-hidden="true" />
                   Read more <span aria-hidden="true">&rarr;</span>
                 </Link>
@@ -234,8 +235,12 @@ export default function LandingPage() {
           <div className="mx-auto max-w-3xl divide-y divide-gray-100">
             {[
               {
+                q: "Is CoffeeChain really free?",
+                a: "Yes! We do not take any percentage of your tips. The only cost is the network gas fee (paid to the Ethereum network) for transactions."
+              },
+              {
                 q: "What network does Coffee Chain run on?",
-                a: "Currently, Coffee Chain is running on the Ethereum Sepolia Testnet for security and testing purposes. We plan to expand to Ethereum Mainnet and Layer 2 solutions soon."
+                a: "Currently, Coffee Chain is running on the Ethereum Sepolia Testnet for security and testing purposes. This means you can test the platform with 'test ETH' at no real cost."
               },
               {
                 q: "How do I withdraw my tips?",
@@ -249,16 +254,16 @@ export default function LandingPage() {
               <div key={i} className="py-6">
                 <button 
                   onClick={() => toggleFaq(i)}
-                  className="flex w-full items-center justify-between text-left focus:outline-none"
+                  className="flex w-full items-center justify-between text-left focus:outline-none group"
                 >
-                  <span className="text-sm font-bold text-gray-900 flex items-center gap-3">
+                  <span className="text-sm font-bold text-gray-900 flex items-center gap-3 transition-colors group-hover:text-orange-600">
                     <HelpCircle className="h-4 w-4 text-orange-600" />
                     {item.q}
                   </span>
-                  <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${openFaq === i ? "rotate-180 text-orange-600" : ""}`} />
                 </button>
                 {openFaq === i && (
-                  <p className="mt-4 pl-7 text-sm text-gray-600 leading-relaxed">
+                  <p className="mt-4 pl-7 text-sm text-gray-600 leading-relaxed animate-in fade-in slide-in-from-top-1 duration-200">
                     {item.a}
                   </p>
                 )}
@@ -320,6 +325,7 @@ export default function LandingPage() {
                     <li><Link href="/" className="text-sm leading-6 text-gray-600 hover:text-orange-600">Home</Link></li>
                     <li><Link href="#features" className="text-sm leading-6 text-gray-600 hover:text-orange-600">Features</Link></li>
                     <li><Link href="#how-it-works" className="text-sm leading-6 text-gray-600 hover:text-orange-600">Workflow</Link></li>
+                    <li><Link href="/docs" className="text-sm leading-6 text-gray-600 hover:text-orange-600">Documentation</Link></li>
                   </ul>
                 </div>
                 <div className="mt-10 md:mt-0">
@@ -345,14 +351,10 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-          <div className="mt-16 border-t border-gray-100 pt-8 sm:mt-20 lg:mt-24 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="mt-16 border-t border-gray-100 pt-8 sm:mt-20 lg:mt-24 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
             <p className="text-xs leading-5 text-gray-500 font-medium">
               &copy; 2026 CoffeeChain. Built by Rakib Hossain. All rights reserved.
             </p>
-            <div className="flex gap-8">
-               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Privacy Policy</span>
-               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Terms of Service</span>
-            </div>
           </div>
         </div>
       </footer>
