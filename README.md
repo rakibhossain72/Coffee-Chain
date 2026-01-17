@@ -5,7 +5,7 @@ Coffee Chain is a decentralized platform built on the Ethereum blockchain that a
 ## Live Application
 
 The application is deployed and can be accessed at:
-https://buy-me-a-coffee-web3-seven.vercel.app/
+[Here](https://coffee-chain-sepolia.vercel.app/)
 
 ## Smart Contract Details
 
