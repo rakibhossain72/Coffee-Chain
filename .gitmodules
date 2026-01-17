@@ -1,0 +1,3 @@
+[submodule "coffeechain-solidity"]
+	path = coffeechain-solidity
+	url = git@github.com:rakibhossain72/coffeechain-solidity.git
