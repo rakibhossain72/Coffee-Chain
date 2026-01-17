@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useAccount, useDisconnect, useReadContract } from "wagmi"
 import { useAppKit } from "@reown/appkit/react"
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
-import Image from "next/image"
+import { Coffee, PlusCircle, LayoutDashboard, Wallet2 } from "lucide-react"
 
 export function Header() {
   const { address, isConnected } = useAccount()
@@ -25,40 +25,44 @@ export function Header() {
 
   const isCreator = !!creatorData?.name
 
-  const formatAddress = (addr: string) => {
-    return `${addr.slice(0, 6)}...${addr.slice(-4)}`
-  }
-
   return (
-    <header className="sticky top-0 z-50 border-b bg-white">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            {/* <div className="h-8 w-8 rounded-full bg-orange-500" /> */}
-            <Image src="/icon.png" alt="Coffee Chain Logo" width={32} height={32} />
-            <span className="text-sm font-semibold text-gray-900">Coffee Chain</span>
+    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/70 backdrop-blur-md">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-20 items-center justify-between">
+          <Link href="/" className="group flex items-center gap-3 transition-all active:scale-95">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500 shadow-lg shadow-orange-200 transition-transform group-hover:rotate-12">
+               <Coffee className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-lg font-black tracking-tight text-gray-900">CoffeeChain</span>
           </Link>
 
-          <nav className="hidden items-center gap-6 sm:flex">
+          <nav className="hidden items-center gap-8 sm:flex">
             {isConnected && (
-              <>
+              <div className="flex items-center gap-6">
                 {!isCreator ? (
-                  <button onClick={() => router.push("/create")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
+                  <button 
+                    onClick={() => router.push("/create")} 
+                    className="flex items-center gap-2 text-sm font-bold text-gray-500 transition-colors hover:text-orange-600 cursor-pointer"
+                  >
+                    <PlusCircle className="h-4 w-4" />
                     Create Page
                   </button>
                 ) : (
-                  <button onClick={() => router.push("/dashboard")} className="text-sm text-gray-600 hover:text-gray-900 cursor-pointer">
+                  <button 
+                    onClick={() => router.push("/dashboard")} 
+                    className="flex items-center gap-2 text-sm font-bold text-gray-500 transition-colors hover:text-orange-600 cursor-pointer"
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
                     Dashboard
                   </button>
                 )}
-              </>
+              </div>
             )}
           </nav>
 
-            <div className="flex items-center gap-2">
-              <appkit-button />
-            </div>
-          
+          <div className="flex items-center gap-4">
+            <appkit-button />
+          </div>
         </div>
       </div>
     </header>
