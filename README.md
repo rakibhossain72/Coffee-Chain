@@ -7,11 +7,16 @@ Coffee Chain is a decentralized platform built on the Ethereum blockchain that a
 The application is deployed and can be accessed at:
 [Here](https://coffee-chain-sepolia.vercel.app/)
 
+### Try it out
+
+You can visit the author's profile or donate testnet Sepolia ETH here:
+[Rakib's Profile](https://coffee-chain-sepolia.vercel.app/rakib)
+
 ## Smart Contract Details
 
 The smart contract is deployed on the Ethereum Sepolia Testnet.
 
-*   Contract Address: 0x035efEe092383e2baFdAAAacF79167c55178fa59
+*   Contract Address: [0x035efEe092383e2baFdAAAacF79167c55178fa59](https://sepolia.etherscan.io/address/0x035efEe092383e2baFdAAAacF79167c55178fa59)
 *   Network: Ethereum Sepolia
 
 ## Key Features
