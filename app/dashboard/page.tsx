@@ -118,65 +118,59 @@ export default function DashboardPage() {
   const totalReceivedUSD = totalReceivedETH * ethPrice
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pb-20">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#fcfcfc] pb-20">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:py-12 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-12 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div>
-            <div className="flex items-center gap-2 text-orange-600 mb-2">
-              <LayoutDashboard className="h-5 w-5" />
-              <span className="text-xs font-bold uppercase tracking-widest">Creator Center</span>
+            <div className="flex items-center gap-2 text-gray-400 mb-1">
+              <LayoutDashboard className="h-4 w-4" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Management Console</span>
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Dashboard</h1>
-            <p className="mt-2 text-lg text-gray-500">Welcome back, {creator.username}. Here's what's happening.</p>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Dashboard</h1>
+            <p className="mt-1 text-sm text-gray-500">Overview of your creator profile and community activity.</p>
           </div>
-          <div className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm border border-gray-100">
-             <div className="h-10 w-10 overflow-hidden rounded-full bg-orange-50 ring-2 ring-orange-100">
-                <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.username}`} alt="Avatar" />
+          <div className="flex items-center gap-4 group cursor-default">
+             <div className="text-right hidden sm:block">
+                <p className="text-sm font-bold text-gray-900 leading-tight">@{creator.username}</p>
+                <p className="text-[11px] text-gray-400 font-mono">{formatAddress(address)}</p>
              </div>
-             <div>
-                <p className="text-xs font-bold text-gray-900">@{creator.username}</p>
-                <p className="text-[10px] text-gray-400 font-mono tracking-tighter">{formatAddress(address)}</p>
+             <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-gray-100 bg-gray-50 p-0.5 transition-shadow group-hover:shadow-md">
+                <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.username}`} alt="Avatar" className="rounded-full" />
              </div>
           </div>
         </div>
 
         {/* Stats Grid */}
-        <div className="mb-12 grid gap-6 sm:grid-cols-3">
+        <div className="mb-10 grid gap-4 grid-cols-1 sm:grid-cols-3">
           {/* Total Received */}
-          <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 shadow-sm transition-all hover:shadow-xl hover:shadow-gray-200/50">
-            <div className="absolute right-0 top-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-orange-50 opacity-50 transition-all group-hover:scale-110" />
-            <TrendingUp className="mb-4 h-6 w-6 text-orange-600" />
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Total Received</p>
-            <div className="mt-2 flex items-baseline gap-2">
-               <p className="text-3xl font-black text-gray-900">{totalReceivedETH.toFixed(4)}</p>
-               <p className="text-sm font-bold text-gray-400">ETH</p>
+          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm transition-all hover:border-gray-300">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Total Revenue</p>
+            <div className="flex items-baseline gap-2">
+               <p className="text-3xl font-bold text-gray-900">{totalReceivedETH.toFixed(4)}</p>
+               <p className="text-xs font-medium text-gray-400">ETH</p>
             </div>
-            <p className="mt-1 text-sm font-semibold text-gray-400">≈ ${totalReceivedUSD.toFixed(2)}</p>
+            <p className="mt-1 text-xs text-gray-500">≈ ${totalReceivedUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</p>
           </div>
-
+          
           {/* Withdrawable */}
-          <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 shadow-sm transition-all hover:shadow-xl hover:shadow-orange-200/30">
-            <div className="absolute right-0 top-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-green-50 opacity-50 transition-all group-hover:scale-110" />
-            <Wallet className="mb-4 h-6 w-6 text-green-600" />
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Available to Withdraw</p>
-            <div className="mt-2 flex items-baseline gap-2">
-               <p className="text-3xl font-black text-green-600">{balanceETH.toFixed(4)}</p>
-               <p className="text-sm font-bold text-green-600/50">ETH</p>
+          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm transition-all hover:border-gray-300">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Available Balance</p>
+            <div className="flex items-baseline gap-2">
+               <p className="text-3xl font-bold text-gray-900">{balanceETH.toFixed(4)}</p>
+               <p className="text-xs font-medium text-gray-400">ETH</p>
             </div>
-            <p className="mt-1 text-sm font-semibold text-gray-400">≈ ${balanceUSD.toFixed(2)}</p>
+            <p className="mt-1 text-xs text-gray-500 font-medium text-green-600">Withdrawal Ready</p>
           </div>
 
           {/* Supporters */}
-          <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 shadow-sm transition-all hover:shadow-xl hover:shadow-blue-200/30">
-            <div className="absolute right-0 top-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-blue-50 opacity-50 transition-all group-hover:scale-110" />
-            <Users className="mb-4 h-6 w-6 text-blue-600" />
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Total Supporters</p>
-            <div className="mt-2 flex items-baseline gap-2">
-               <p className="text-3xl font-black text-gray-900">{Number(memoCount || 0)}</p>
-               <p className="text-sm font-bold text-gray-400">Supporters</p>
+          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm transition-all hover:border-gray-300">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Community Size</p>
+            <div className="flex items-baseline gap-2">
+               <p className="text-3xl font-bold text-gray-900">{Number(memoCount || 0)}</p>
+               <p className="text-xs font-medium text-gray-400">Fans</p>
             </div>
-            <p className="mt-1 text-sm font-semibold text-gray-400">Active community</p>
+            <p className="mt-1 text-xs text-gray-500">Unique Supporters</p>
           </div>
         </div>
 
@@ -184,80 +178,94 @@ export default function DashboardPage() {
           {/* Main Content Area */}
           <div className="lg:col-span-8 space-y-10">
             {/* Withdraw Section */}
-            <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
-               <div className="bg-gray-900 px-8 py-6 text-white">
+            <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+               <div className="border-b border-gray-100 px-6 sm:px-8 py-4 bg-gray-50/50">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                       <ArrowUpRight className="h-6 w-6 text-orange-500" />
-                       <h3 className="text-lg font-bold">Transfer Funds</h3>
+                    <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                      <Wallet className="h-4 w-4 text-gray-400" />
+                      Withdrawal Settings
+                    </h3>
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200">
+                      <div className="h-1 w-1 rounded-full bg-slate-400" />
+                      <span className="text-[10px] font-bold text-slate-500 uppercase">Vault Secure</span>
                     </div>
-                    <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Secure</span>
                   </div>
                </div>
-               <div className="p-8">
-                  <p className="mb-6 text-sm text-gray-500 leading-relaxed">
-                    Transfer your earned ETH directly to your connected wallet. 
-                    Current wallet: <span className="font-mono font-bold text-gray-900">{formatAddress(address)}</span>
+               <div className="p-6 sm:p-8">
+                  <p className="mb-6 text-sm text-gray-500 leading-relaxed max-w-lg">
+                    Transfer funds to your connected Ethereum address. Transactions are irreversible and executed directly on-chain.
                   </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-lg bg-gray-50 border border-gray-100 mb-8">
+                    <div className="flex-shrink-0 h-8 w-8 rounded-full bg-white flex items-center justify-center text-xs text-gray-400 border border-gray-100">
+                      <ArrowUpRight className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase font-bold text-gray-400 mb-0.5">Primary Wallet Address</p>
+                      <p className="text-xs font-mono text-gray-600 break-all">{address}</p>
+                    </div>
+                  </div>
                   <WithdrawButton balance={BigInt(balance || 0)} />
                </div>
             </div>
 
             {/* Support History */}
-            <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-              <div className="mb-8 flex items-center gap-3">
-                 <History className="h-6 w-6 text-orange-600" />
-                 <h3 className="text-xl font-bold text-gray-900">Recent Activity</h3>
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+              <div className="border-b border-gray-100 px-6 sm:px-8 py-4 bg-gray-50/50">
+                 <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                    <History className="h-4 w-4 text-gray-400" />
+                    Transaction Journal
+                 </h3>
               </div>
               
-              {memos.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-center">
-                   <div className="mb-4 rounded-full bg-gray-50 p-6">
-                      <Users className="h-10 w-10 text-gray-200" />
-                   </div>
-                   <p className="text-sm font-medium text-gray-400">No activity yet. Share your profile to get started!</p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {memos.map((memo, index) => (
-                    <div key={`${memo.from}-${index}`} className="group flex items-start gap-4 p-2 transition-all hover:bg-gray-50 rounded-2xl">
-                      <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-2xl bg-orange-50 ring-2 ring-white shadow-sm transition-transform group-hover:scale-105">
-                        <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${memo.name}`} alt={memo.name} />
-                      </div>
-                      <div className="flex-1 border-b border-gray-50 pb-4 group-last:border-0">
-                         <div className="flex items-center justify-between gap-4">
-                            <h4 className="text-sm font-bold text-gray-900">{memo.name}</h4>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{formatAddress(memo.from)}</span>
-                         </div>
-                         {memo.message && <p className="mt-2 text-sm text-gray-600 leading-relaxed">{memo.message}</p>}
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* Pagination */}
-                  <div className="flex items-center justify-center gap-6 pt-8">
-                    <button
-                      onClick={() => setPage(Math.max(0, page - 1))}
-                      disabled={page === 0}
-                      className="group flex items-center gap-2 text-xs font-bold text-gray-500 transition-colors hover:text-orange-600 disabled:opacity-30"
-                    >
-                      <ArrowUpRight className="h-4 w-4 rotate-[225deg]" />
-                      Newer
-                    </button>
-                    <div className="h-8 w-[1px] bg-gray-200" />
-                    <span className="text-xs font-black text-gray-900">PAGE {page + 1}</span>
-                    <div className="h-8 w-[1px] bg-gray-200" />
-                    <button
-                      onClick={() => setPage(page + 1)}
-                      disabled={!memosData || memosData.length < 10}
-                      className="group flex items-center gap-2 text-xs font-bold text-gray-500 transition-colors hover:text-orange-600 disabled:opacity-30"
-                    >
-                      Older
-                      <ArrowUpRight className="h-4 w-4 rotate-45" />
-                    </button>
+              <div className="p-6 sm:p-8">
+                {memos.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-16 text-center">
+                     <p className="text-sm font-medium text-gray-400 italic">No historical transactions found.</p>
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div className="space-y-0 divide-y divide-gray-100">
+                    {memos.map((memo, index) => (
+                      <div key={`${memo.from}-${index}`} className="group flex items-start gap-4 py-6 transition-colors hover:bg-gray-50/50 -mx-4 px-4 sm:-mx-8 sm:px-8 first:pt-0">
+                        <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-gray-50 border border-gray-100">
+                          <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${memo.name}`} alt={memo.name} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                              <h4 className="text-sm font-bold text-gray-900 truncate">{memo.name}</h4>
+                              <span className="text-[10px] font-mono text-gray-400 uppercase">{formatAddress(memo.from)}</span>
+                           </div>
+                           {memo.message && (
+                             <div className="p-3 rounded-lg bg-gray-50 border border-gray-100">
+                               <p className="text-sm text-gray-600 leading-relaxed">{memo.message}</p>
+                             </div>
+                           )}
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Pagination */}
+                    <div className="flex items-center justify-between pt-8">
+                      <button
+                        onClick={() => setPage(Math.max(0, page - 1))}
+                        disabled={page === 0}
+                        className="text-[11px] font-bold text-gray-400 hover:text-gray-900 uppercase tracking-widest disabled:opacity-30 disabled:hover:text-gray-400 transition-colors"
+                      >
+                        Previous
+                      </button>
+                      <span className="text-[11px] font-bold text-gray-200">/</span>
+                      <span className="text-[11px] font-bold text-gray-900 tracking-[0.2em]">0{page + 1}</span>
+                      <span className="text-[11px] font-bold text-gray-200">/</span>
+                      <button
+                        onClick={() => setPage(page + 1)}
+                        disabled={!memosData || memosData.length < 10}
+                        className="text-[11px] font-bold text-gray-400 hover:text-gray-900 uppercase tracking-widest disabled:opacity-30 disabled:hover:text-gray-400 transition-colors"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
