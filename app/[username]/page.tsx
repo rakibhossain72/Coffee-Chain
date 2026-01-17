@@ -99,17 +99,17 @@ export default function CreatorProfilePage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="animate-pulse space-y-8">
-          <div className="h-48 rounded-3xl bg-gray-200" />
-          <div className="flex flex-col items-center gap-4">
-            <div className="-mt-16 h-32 w-32 rounded-full border-4 border-white bg-gray-200" />
-            <div className="h-8 w-48 rounded bg-gray-200" />
-            <div className="h-4 w-96 rounded bg-gray-200" />
+          <div className="h-48 rounded-3xl bg-gray-100" />
+          <div className="flex flex-col items-center gap-4 lg:items-start">
+            <div className="-mt-20 h-32 w-32 rounded-2xl border-4 border-white bg-gray-100 shadow-sm" />
+            <div className="h-8 w-48 rounded bg-gray-100" />
+            <div className="h-4 w-full max-w-2xl rounded bg-gray-100" />
           </div>
-          <div className="grid gap-8 lg:grid-cols-3">
-             <div className="h-64 rounded-2xl bg-gray-200 lg:col-span-1" />
-             <div className="h-64 rounded-2xl bg-gray-200 lg:col-span-2" />
+          <div className="grid gap-8 lg:grid-cols-12">
+             <div className="h-[400px] rounded-3xl bg-gray-100 lg:col-span-4" />
+             <div className="h-[600px] rounded-3xl bg-gray-100 lg:col-span-8" />
           </div>
         </div>
       </div>
@@ -118,11 +118,19 @@ export default function CreatorProfilePage() {
 
   if (!creator) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-4xl flex-col items-center justify-center px-4">
-        <div className="rounded-2xl border border-orange-100 bg-orange-50/50 p-8 text-center backdrop-blur-sm">
-          <Coffee className="mx-auto mb-4 h-12 w-12 text-orange-400" />
-          <p className="text-lg font-medium text-orange-800">Profile Pending</p>
-          <p className="mt-2 text-sm text-orange-600">This creator hasn't set up their profile details yet.</p>
+      <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4">
+        <div className="w-full rounded-3xl border border-orange-100 bg-white p-12 text-center shadow-xl shadow-orange-50">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+            <Coffee className="h-10 w-10" />
+          </div>
+          <h2 className="text-2xl font-black text-gray-900">Profile Not Ready</h2>
+          <p className="mt-4 text-gray-500">This creator hasn't finished setting up their profile yet. Please check back later!</p>
+          <button 
+            onClick={() => window.history.back()}
+            className="mt-8 rounded-xl bg-orange-600 px-8 py-3 text-sm font-bold text-white transition-all hover:bg-orange-700 active:scale-95"
+          >
+            Go Back
+          </button>
         </div>
       </div>
     )
@@ -132,79 +140,86 @@ export default function CreatorProfilePage() {
   const totalReceivedUSD = totalReceivedETH * ethPrice
 
   return (
-    <div className="min-h-screen bg-[#fcfcfc] pb-20">
-      {/* Banner */}
-      <div className="relative h-48 sm:h-64 w-full overflow-hidden bg-gray-100">
+    <div className="min-h-screen bg-[#fafafa] pb-24">
+      {/* Banner Area */}
+      <div className="relative h-[220px] sm:h-[300px] lg:h-[360px] w-full overflow-hidden bg-gray-900">
          <Image 
-            src="/creator_banner_default_1768677263044.png" 
+            src="/creator_banner_default.png" 
             alt="Profile Banner" 
             fill
-            className="object-cover opacity-60 grayscale-[0.5]"
+            priority
+            className="object-cover opacity-60 transition-opacity duration-700"
           />
-         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5" />
+         <div className="absolute inset-0 bg-gradient-to-t from-[#fafafa] via-transparent to-transparent opacity-90" />
       </div>
 
-      <div className="mx-auto -mt-16 sm:-mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-10">
-          {/* Profile Section */}
-          <div className="relative flex flex-col items-center text-center lg:items-start lg:text-left">
-            <div className="relative mb-6 h-32 w-32 sm:h-40 sm:w-40 overflow-hidden rounded-2xl border-4 border-white bg-white shadow-xl">
-               <Image 
-                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.username}`} 
-                alt={creator.username} 
-                fill
-                className="object-cover"
-              />
-            </div>
-            
-            <div className="flex w-full flex-col justify-between gap-8 lg:flex-row lg:items-end">
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-col sm:flex-row items-center gap-3 lg:justify-start">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">@{creator.username}</h1>
-                  <span className="flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-bold text-orange-600 uppercase border border-orange-100 tracking-wider">
+      <div className="relative z-10 mx-auto -mt-16 sm:-mt-24 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-8 sm:gap-12">
+          {/* Header Info */}
+          <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+            <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-end text-center lg:text-left">
+              <div className="relative h-40 w-40 flex-shrink-0 overflow-hidden rounded-3xl border-4 border-white bg-white shadow-2xl">
+                 <Image 
+                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(creator.username)}`} 
+                  alt={creator.username} 
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              
+              <div className="pb-2">
+                <div className="flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
+                  <h1 className="text-4xl font-black tracking-tight text-gray-900 drop-shadow-sm lg:drop-shadow-none">
+                    @{creator.username}
+                  </h1>
+                  <div className="flex items-center gap-1.5 rounded-full bg-orange-500 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg shadow-orange-200">
                     <ShieldCheck className="h-3 w-3" />
-                    Verified Creator
-                  </span>
-                </div>
-                <p className="mt-4 max-w-2xl text-base sm:text-lg text-gray-500 leading-relaxed italic">{creator.about}</p>
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
-                  <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-xs font-mono text-gray-400 border border-gray-100 shadow-sm transition-colors hover:border-gray-200">
-                    <Globe className="h-3.5 w-3.5" />
-                    {formatAddress(creator.address)}
+                    Verified
                   </div>
+                </div>
+                <p className="mt-4 max-w-2xl text-lg font-medium text-gray-500 leading-relaxed">
+                  {creator.about}
+                </p>
+                <div className="mt-6 flex items-center justify-center gap-2 lg:justify-start">
+                   <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-2 border border-gray-100 text-xs font-bold text-gray-400 shadow-sm transition-all hover:border-gray-200">
+                      <Globe className="h-4 w-4 text-orange-500" />
+                      <span className="font-mono">{formatAddress(creator.address)}</span>
+                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Stats Summary Area */}
-              <div className="flex items-center gap-6 rounded-xl bg-white p-6 shadow-sm border border-gray-100 divide-x divide-gray-50">
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Total Support</span>
-                  <div className="flex items-baseline gap-1.5">
-                    <p className="text-xl font-bold text-gray-900">{totalReceivedETH.toFixed(4)}</p>
-                    <span className="text-[10px] font-bold text-gray-300">ETH</span>
-                  </div>
+            {/* Stats Card */}
+            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 rounded-3xl bg-white p-6 sm:p-8 shadow-xl shadow-gray-100/50 border border-gray-100 ring-1 ring-gray-900/5 min-w-fit w-full sm:w-auto">
+              <div className="text-center lg:text-left">
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Support</p>
+                <div className="mt-1 flex items-baseline gap-1.5 justify-center lg:justify-start">
+                  <span className="text-3xl font-black text-gray-900">{totalReceivedETH.toFixed(4)}</span>
+                  <span className="text-xs font-bold text-orange-500">ETH</span>
                 </div>
-                <div className="flex flex-col pl-6">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Valuation</span>
-                  <p className="text-xl font-bold text-gray-900">${totalReceivedUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                </div>
+                <p className="mt-0.5 text-xs font-bold text-gray-400">≈ ${totalReceivedUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+              </div>
+              <div className="h-12 w-[1px] bg-gray-100 hidden sm:block" />
+              <div className="text-center lg:text-left">
+                 <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Supporters</p>
+                 <p className="mt-1 text-2xl font-black text-gray-900">{memos?.length || 0}</p>
               </div>
             </div>
           </div>
 
           <div className="grid gap-12 lg:grid-cols-12">
-            {/* Action Section */}
+            {/* Payment Section */}
             <div className="lg:col-span-5 xl:col-span-4">
               <div className="sticky top-24">
                 <SupportForm creatorAddress={creator.address} />
               </div>
             </div>
 
-            {/* History Section Area */}
+            {/* Feed Section */}
             <div className="lg:col-span-7 xl:col-span-8">
-              <div className="rounded-xl bg-white shadow-sm border border-gray-100 min-h-[500px]">
-                <SupportsList memos={memos ? [...memos] : []} />
-              </div>
+               <div className="overflow-hidden rounded-3xl bg-white border border-gray-100 shadow-sm">
+                  <SupportsList memos={memos ? [...memos] : []} />
+               </div>
             </div>
           </div>
         </div>

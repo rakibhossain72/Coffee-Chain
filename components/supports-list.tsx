@@ -54,9 +54,9 @@ export function SupportsList({ memos }: SupportsListProps) {
             className="group px-8 py-8 transition-colors hover:bg-gray-50/50"
           >
             <div className="flex flex-col sm:flex-row gap-6">
-               <div className="flex-shrink-0 h-10 w-10 overflow-hidden rounded-lg bg-gray-50 border border-gray-100 ring-4 ring-white shadow-sm">
+               <div className="relative flex-shrink-0 h-10 w-10 overflow-hidden rounded-lg bg-gray-50 border border-gray-100 ring-4 ring-white shadow-sm">
                   <Image 
-                    src={`https://api.dicebear.com/7.x/initials/svg?seed=${memo.name}`} 
+                    src={`https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(memo.name || "Anonymous")}`} 
                     alt={memo.name} 
                     fill
                     className="object-cover"
