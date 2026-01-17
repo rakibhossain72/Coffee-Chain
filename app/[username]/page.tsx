@@ -9,7 +9,7 @@ import { SupportsList } from "@/components/supports-list"
 import { formatAddress } from "@/lib/utils"
 import { getAddress } from "viem"
 import Image from "next/image"
-import { ExternalLink, Coffee, Heart, Users } from "lucide-react"
+import { ExternalLink, Coffee, Heart, Users, Globe, ShieldCheck } from "lucide-react"
 
 export default function CreatorProfilePage() {
   const params = useParams()
@@ -132,23 +132,23 @@ export default function CreatorProfilePage() {
   const totalReceivedUSD = totalReceivedETH * ethPrice
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pb-20">
+    <div className="min-h-screen bg-[#fcfcfc] pb-20">
       {/* Banner */}
-      <div className="relative h-64 w-full overflow-hidden bg-orange-100">
+      <div className="relative h-48 sm:h-64 w-full overflow-hidden bg-gray-100">
          <Image 
             src="/creator_banner_default_1768677263044.png" 
             alt="Profile Banner" 
             fill
-            className="object-cover opacity-80"
+            className="object-cover opacity-60 grayscale-[0.5]"
           />
-         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50/50" />
+         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5" />
       </div>
 
-      <div className="mx-auto -mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-8">
+      <div className="mx-auto -mt-16 sm:-mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-10">
           {/* Profile Section */}
           <div className="relative flex flex-col items-center text-center lg:items-start lg:text-left">
-            <div className="relative mb-4 h-32 w-32 overflow-hidden rounded-full border-4 border-white bg-white shadow-xl">
+            <div className="relative mb-6 h-32 w-32 sm:h-40 sm:w-40 overflow-hidden rounded-2xl border-4 border-white bg-white shadow-xl">
                <Image 
                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${creator.username}`} 
                 alt={creator.username} 
@@ -157,51 +157,52 @@ export default function CreatorProfilePage() {
               />
             </div>
             
-            <div className="flex w-full flex-col justify-between gap-6 lg:flex-row lg:items-end">
-              <div>
-                <div className="flex items-center justify-center gap-2 lg:justify-start">
-                  <h1 className="text-3xl font-bold tracking-tight text-gray-900">@{creator.username}</h1>
-                  <div className="rounded-full bg-orange-100 p-1 text-orange-600">
-                    <Heart className="h-4 w-4 fill-current" />
-                  </div>
+            <div className="flex w-full flex-col justify-between gap-8 lg:flex-row lg:items-end">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row items-center gap-3 lg:justify-start">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">@{creator.username}</h1>
+                  <span className="flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-bold text-orange-600 uppercase border border-orange-100 tracking-wider">
+                    <ShieldCheck className="h-3 w-3" />
+                    Verified Creator
+                  </span>
                 </div>
-                <p className="mt-3 max-w-2xl text-lg text-gray-600 leading-relaxed">{creator.about}</p>
-                <div className="mt-4 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-                  <div className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-medium text-gray-500 shadow-sm border border-gray-100">
-                    <span className="h-2 w-2 rounded-full bg-green-500" />
+                <p className="mt-4 max-w-2xl text-base sm:text-lg text-gray-500 leading-relaxed italic">{creator.about}</p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                  <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-xs font-mono text-gray-400 border border-gray-100 shadow-sm transition-colors hover:border-gray-200">
+                    <Globe className="h-3.5 w-3.5" />
                     {formatAddress(creator.address)}
-                    <ExternalLink className="ml-1 h-3 w-3" />
                   </div>
                 </div>
               </div>
 
-              {/* Quick Stats Card */}
-              <div className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm border border-gray-100">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
-                  <Users className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-gray-500">Total Support</p>
-                  <div className="flex items-baseline gap-2">
-                    <p className="text-xl font-bold text-gray-900">{totalReceivedETH.toFixed(4)} ETH</p>
-                    <p className="text-sm font-medium text-gray-400">≈ ${totalReceivedUSD.toFixed(2)}</p>
+              {/* Stats Summary Area */}
+              <div className="flex items-center gap-6 rounded-xl bg-white p-6 shadow-sm border border-gray-100 divide-x divide-gray-50">
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Total Support</span>
+                  <div className="flex items-baseline gap-1.5">
+                    <p className="text-xl font-bold text-gray-900">{totalReceivedETH.toFixed(4)}</p>
+                    <span className="text-[10px] font-bold text-gray-300">ETH</span>
                   </div>
+                </div>
+                <div className="flex flex-col pl-6">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Valuation</span>
+                  <p className="text-xl font-bold text-gray-900">${totalReceivedUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-3">
-            {/* Support Form Column */}
-            <div className="lg:col-span-1">
+          <div className="grid gap-12 lg:grid-cols-12">
+            {/* Action Section */}
+            <div className="lg:col-span-5 xl:col-span-4">
               <div className="sticky top-24">
                 <SupportForm creatorAddress={creator.address} />
               </div>
             </div>
 
-            {/* Supports List Column */}
-            <div className="lg:col-span-2">
-              <div className="rounded-3xl bg-white p-8 shadow-sm border border-gray-100">
+            {/* History Section Area */}
+            <div className="lg:col-span-7 xl:col-span-8">
+              <div className="rounded-xl bg-white shadow-sm border border-gray-100 min-h-[500px]">
                 <SupportsList memos={memos ? [...memos] : []} />
               </div>
             </div>
