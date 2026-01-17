@@ -235,3 +235,21 @@ export const CONTRACT_ABI = [
     type: "function",
   },
 ] as const;
+
+export const CHAINLINK_ETH_USD_ADDRESS = "0x694AA1769357215DE4FAC081bf1f309aDC325306";
+
+export const CHAINLINK_ABI = [
+  {
+    inputs: [],
+    name: "latestRoundData",
+    outputs: [
+      { name: "roundId", type: "uint80" },
+      { name: "answer", type: "int256" },
+      { name: "startedAt", type: "uint256" },
+      { name: "updatedAt", type: "uint256" },
+      { name: "answeredInRound", type: "uint80" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+] as const;

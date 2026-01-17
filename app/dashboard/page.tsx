@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react"
 import { useAccount, useReadContract } from "wagmi"
 import { useRouter } from "next/navigation"
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
+import { CONTRACT_ADDRESS, CONTRACT_ABI, CHAINLINK_ETH_USD_ADDRESS, CHAINLINK_ABI } from "@/lib/contract"
 import { WithdrawButton } from "@/components/withdraw-button"
 import { EditProfileForm } from "@/components/edit-profile-form"
 import { formatAddress } from "@/lib/utils"
 import { AccessRestrictionModal } from "@/components/access-restriction-modal"
 
-const ETH_TO_USD = 2000 // Example rate, would normally be fetched
+
 
 export default function DashboardPage() {
   const { address, isConnected } = useAccount()
@@ -59,12 +59,22 @@ export default function DashboardPage() {
     },
   })
 
+  const { data: priceData } = useReadContract({
+    address: CHAINLINK_ETH_USD_ADDRESS,
+    abi: CHAINLINK_ABI,
+    functionName: "latestRoundData",
+  })
+
+  const ethPrice = priceData ? Number((priceData as any)[1]) / 1e8 : 0
+
   useEffect(() => {
     // Access control is handled via conditional rendering
     if (creatorData?.name) {
       setCreator({
         username: creatorData.name,
         about: creatorData.about,
+        totalReceived: creatorData.totalReceived,
+        address: address,
       })
       setLoading(false)
     } else if (address && !loading) {
@@ -103,9 +113,10 @@ export default function DashboardPage() {
   }
 
   const balanceETH = Number(balance || 0) / 1e18
-  const balanceUSD = balanceETH * ETH_TO_USD
+  const balanceUSD = balanceETH * ethPrice
   const totalReceivedETH = Number(creator.totalReceived || 0) / 1e18
-  const totalReceivedUSD = totalReceivedETH * ETH_TO_USD
+
+  const totalReceivedUSD = totalReceivedETH * ethPrice
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
