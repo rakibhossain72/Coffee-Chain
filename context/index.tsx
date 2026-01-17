@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createAppKit } from '@reown/appkit/react'
 import React, { type ReactNode } from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
+import { sepolia } from 'viem/chains'
 
 // Set up queryClient
 const queryClient = new QueryClient()
@@ -13,8 +14,8 @@ const queryClient = new QueryClient()
 const metadata = {
   name: 'Coffee Chain',
   description: 'Support creators on the Ethereum blockchain with direct ETH tips.',
-  url: 'https://coffeechain.eth', // Updated to match project brand
-  icons: ['https://coffeechain.eth/icon.svg']
+  url: 'https://coffee-chain-sepolia.vercel.app/',
+  icons: ['https://coffee-chain-sepolia.vercel.app/icon.svg']
 }
 
 // Create the modal
@@ -22,6 +23,7 @@ export const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
   networks,
+  defaultNetwork: sepolia,
   metadata,
   themeMode: 'light',
   features: {

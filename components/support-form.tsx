@@ -3,8 +3,8 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi"
-import { parseEther } from "viem"
+import { useAccount, useBalance, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
+import { parseEther, formatEther } from "viem"
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract"
 import toast from "react-hot-toast"
 
@@ -20,6 +20,11 @@ export function SupportForm({ creatorAddress }: SupportFormProps) {
   const [selectedAmount, setSelectedAmount] = useState(PRESET_AMOUNTS[0])
   const [customAmount, setCustomAmount] = useState("")
 
+  const { address, isConnected } = useAccount()
+  const { data: balanceData } = useBalance({
+    address,
+  })
+
   const { writeContract, isPending, data: hash } = useWriteContract()
   const { isLoading: isWaiting } = useWaitForTransactionReceipt({
     hash,
@@ -30,14 +35,27 @@ export function SupportForm({ creatorAddress }: SupportFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    if (!isConnected) {
+      toast.error("Please connect your wallet")
+      return
+    }
+
     if (!name.trim()) {
       toast.error("Please enter your name")
       return
     }
 
     const amount = customAmount || selectedAmount
-    if (!amount || Number.parseFloat(amount) <= 0) {
+    const amountNum = Number.parseFloat(amount)
+
+    if (!amount || amountNum <= 0) {
       toast.error("Please select or enter an amount")
+      return
+    }
+
+    // Balance validation
+    if (balanceData && amountNum > Number.parseFloat(formatEther(balanceData.value))) {
+      toast.error("Insufficient balance")
       return
     }
 
@@ -60,8 +78,15 @@ export function SupportForm({ creatorAddress }: SupportFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-xl border border-gray-200 bg-white p-6 sticky top-24">
-      <h3 className="mb-6 text-sm font-semibold text-gray-900">Buy me a coffee</h3>
+    <form onSubmit={handleSubmit} className="rounded-xl border border-gray-200 bg-white p-6 sticky top-24 shadow-sm">
+      <div className="mb-6">
+        <h3 className="text-sm font-semibold text-gray-900">Buy me a coffee</h3>
+        {isConnected && balanceData && (
+          <p className="mt-1 text-[10px] text-gray-500 font-medium">
+            Your balance: {Number.parseFloat(formatEther(balanceData.value)).toFixed(4)} {balanceData.symbol}
+          </p>
+        )}
+      </div>
 
       {/* Amount Selection */}
       <div className="mb-6">
